@@ -16,6 +16,7 @@
 05_wordcloud_analysis.py        词云、行业图、城市和省份地图
 06_lda_topic_analysis.py        sklearn LDA主题分析
 07_finbert_analysis.py          FinBERT语义和情感分析
+08_deepseek_r1_analysis.py      DeepSeek R1语义级别分析
 digital_keywords.py             数字化转型关键词词典
 visual_utils.py                 统一颜色和静态地图截图工具
 requirements.txt                依赖库
@@ -31,6 +32,7 @@ python .\04_merge_industry_city_data.py
 python .\05_wordcloud_analysis.py
 python .\06_lda_topic_analysis.py
 python .\07_finbert_analysis.py
+python .\08_deepseek_r1_analysis.py
 ```
 
 完整流程如下：
@@ -43,6 +45,7 @@ python .\04_merge_industry_city_data.py
 python .\05_wordcloud_analysis.py
 python .\06_lda_topic_analysis.py
 python .\07_finbert_analysis.py
+python .\08_deepseek_r1_analysis.py
 ```
 
 ## 关键词词典
@@ -84,6 +87,18 @@ digital_keywords.py
 
 `07_finbert_analysis.py` 使用中文 FinBERT 进行语义指数和情感概率分析，并从公司、年份、行业、省份、城市、阶段等维度进行对比。
 
+`08_deepseek_r1_analysis.py` 使用 DeepSeek R1 对每份年报进行语义级别判断，输出“实质性转型、表层叙事、不明显”三类结果，并计算数字化转型得分和金融科技使用得分。同时与词典法标准化指数、FinBERT 语义指数进行年份、行业、城市维度对比。
+
+运行第 8 步前，需要在本地创建 `.env` 文件：
+
+```text
+DEEPSEEK_API_KEY=你的DeepSeek API Key
+DEEPSEEK_MODEL=deepseek-reasoner
+DEEPSEEK_BASE_URL=https://api.deepseek.com
+```
+
+`.env` 文件只保存在本地，不上传到 GitHub。
+
 ## 输出说明
 
 运行后会在本地生成：
@@ -115,4 +130,3 @@ pip install -r requirements.txt
 - scikit-learn
 - torch
 - transformers
-
