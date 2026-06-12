@@ -380,6 +380,7 @@ def merge_finbert(result_df):
 def build_summary(df, group_col):
     value_cols = [
         "DeepSeek数字化转型得分",
+        "DeepSeek数字化转型指数",
         "DeepSeek金融科技使用得分",
         "词典标准化指数",
         "FinBERT综合语义得分标准化指数",
@@ -391,7 +392,7 @@ def build_summary(df, group_col):
 def save_year_line(year_df):
     CHART_DIR.mkdir(parents=True, exist_ok=True)
     plt.figure(figsize=(10, 5))
-    plt.plot(year_df["年份"], year_df["DeepSeek数字化转型得分"], marker="o", label="DeepSeek数字化得分", color=BLUE)
+    plt.plot(year_df["年份"], year_df["DeepSeek数字化转型指数"], marker="o", label="DeepSeek数字化指数", color=BLUE)
     plt.plot(year_df["年份"], year_df["词典标准化指数"], marker="s", label="词典法标准化指数", color=ORANGE)
     plt.plot(year_df["年份"], year_df["FinBERT综合语义得分标准化指数"], marker="^", label="FinBERT语义指数", color=GREEN)
     plt.title("年份维度：DeepSeek、词典法与FinBERT对比")
@@ -408,13 +409,12 @@ def save_year_line(year_df):
 
 def save_industry_bar(industry_df):
     CHART_DIR.mkdir(parents=True, exist_ok=True)
-    plot_df = industry_df.sort_values("DeepSeek数字化转型得分", ascending=False).head(12)
+    plot_df = industry_df.sort_values("DeepSeek数字化转型指数", ascending=False).head(12)
     plt.figure(figsize=(10, 6))
-    plt.barh(plot_df["行业名称"], plot_df["DeepSeek数字化转型得分"], color=BLUE, label="DeepSeek数字化得分")
-    plt.barh(plot_df["行业名称"], plot_df["DeepSeek金融科技使用得分"], color=GREEN, alpha=0.65, label="金融科技得分")
+    plt.barh(plot_df["行业名称"], plot_df["DeepSeek数字化转型指数"], color=BLUE, label="DeepSeek数字化指数")
     plt.gca().invert_yaxis()
-    plt.title("行业维度：DeepSeek数字化与金融科技得分")
-    plt.xlabel("平均得分")
+    plt.title("行业维度：DeepSeek数字化转型指数")
+    plt.xlabel("平均标准化指数")
     plt.legend()
     plt.tight_layout()
     output = CHART_DIR / "行业维度_DeepSeek得分条形图.png"
