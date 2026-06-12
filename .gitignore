@@ -24,6 +24,7 @@ env/
 *.orig
 
 # Data artifacts
+年报文件/
 *.pdf
 *.PDF
 *.txt

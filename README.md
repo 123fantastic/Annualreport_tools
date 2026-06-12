@@ -1,131 +1,118 @@
-<div align="center">
-  <img src="https://raw.githubusercontent.com/legeling/Annualreport_tools/main/imgs/icon.svg" width="96" alt="Annualreport Tools Icon" />
-  <h1>Annualreport_tools · 年报工具集</h1>
-  <p>快速抓取巨潮资讯年报、批量下载PDF、转换为TXT，并进行关键词分析。</p>
-  <p>
-    <a href="https://github.com/legeling/Annualreport_tools/stargazers"><img src="https://img.shields.io/github/stars/legeling/Annualreport_tools?style=flat-square" alt="GitHub Stars"/></a>
-    <a href="https://github.com/legeling/Annualreport_tools/network/members"><img src="https://img.shields.io/github/forks/legeling/Annualreport_tools?style=flat-square" alt="GitHub Forks"/></a>
-    <a href="https://github.com/legeling/Annualreport_tools/watchers"><img src="https://img.shields.io/github/watchers/legeling/Annualreport_tools?style=flat-square" alt="GitHub Watchers"/></a>
-    <img src="https://img.shields.io/badge/Python-3.10%2B-3776AB?style=flat-square&logo=python&logoColor=white" alt="Python Version"/>
-    <a href="https://github.com/legeling/Annualreport_tools/issues"><img src="https://img.shields.io/github/issues/legeling/Annualreport_tools?style=flat-square" alt="GitHub Issues"/></a>
-  </p>
-</div>
+# Annualreport_tools 学习版
 
-<p align="center">
-  <a href="./docs/README.en.md">English</a> ·
-  <a href="./docs/README.zh.md">简体中文</a>
-</p>
+作者：Winter
 
-![演示截图](https://cdn.nlark.com/yuque/0/2023/png/22569186/1684739594091-379cdf84-28f5-4998-835f-7c9555fddac7.png#averageHue=%23a8c1db&clientId=uc29edf23-5138-4&from=paste&height=687&id=ua755022a&originHeight=1374&originWidth=2560&originalType=binary&ratio=2&rotation=0&showTitle=false&size=944474&status=done&style=none&taskId=ucc34614d-4b0d-48dc-a316-949d41f13b8&title=&width=1280)
+这是一个用于课堂展示的上市公司年报文本分析项目。项目以中证 A50 公司为样本，围绕近 10 年年报文本，完成年报链接获取、PDF 下载、TXT 转换、数字化转型关键词词频分析、行业和城市信息合并、词云与地图可视化、LDA 主题分析，以及 FinBERT 语义和情感分析。
 
----
+本项目保留课堂学习需要的核心代码，不上传大量 PDF、TXT、Excel 和图片输出文件。
 
-## 免责声明
+## 项目结构
 
-**重要提示：**
+```text
+01_get_report_links.py          获取中证A50年报链接
+02_download_reports_to_txt.py   下载PDF并转换TXT
+03_text_analysis.py             关键词词频统计
+04_merge_industry_city_data.py  合并行业、城市、省份信息
+05_wordcloud_analysis.py        词云、行业图、城市和省份地图
+06_lda_topic_analysis.py        sklearn LDA主题分析
+07_finbert_analysis.py          FinBERT语义和情感分析
+digital_keywords.py             数字化转型关键词词典
+visual_utils.py                 统一颜色和静态地图截图工具
+requirements.txt                依赖库
+```
 
-- 本项目**仅供学习研究使用**，请勿用于任何违法违规的爬虫行为、商业转售或其他违反法律法规的活动。
-- 请**优先使用已整理好的网盘数据集**（`./res/AnnualReport_links_2004_2023.xlsx`），该文件已包含下载好的年报链接。避免频繁访问巨潮资讯服务器，尊重源站资源与相关监管要求。
-- **限速至关重要**：爬虫实现了按天分片的机制以最小化服务器负载。请不要修改代码以增加请求频率。
-- 您对使用这些脚本触发的任何数据收集行为**负全部责任**。作者不对滥用行为承担任何责任。
-- 使用本工具集即表示您已阅读并同意本免责声明。
+## 运行顺序
 
-## 核心功能
+如果已经完成年报链接获取和 TXT 文本下载，可以直接从第 3 步开始：
 
-1. **report_link_crawler.py** – 按板块/行业分段查询巨潮资讯，在速率限制下保持稳定。
-2. **pdf_batch_converter.py** – 具有MIME验证的鲁棒PDF下载器 + 转换为TXT。
-3. **text_analysis.py** – 多进程关键词分析器 + Excel导出。
-4. **text_analysis_universal.py** – 接受任意TXT目录的轻量级分析器。
-5. **资源文件（`/res`）** – 精选的年报主表和文档图标资源。
-6. **文档文件夹** – 存储在`docs/`下的双语文档，方便切换。
+```powershell
+python .\03_text_analysis.py
+python .\04_merge_industry_city_data.py
+python .\05_wordcloud_analysis.py
+python .\06_lda_topic_analysis.py
+python .\07_finbert_analysis.py
+```
 
-## 快速开始
+完整流程如下：
 
-1. 安装依赖：`pip install -r requirements.txt`
-2. 运行 `1.report_link_crawler.py`（或复用 `./res/AnnualReport_links_2004_2023.xlsx`）准备年报链接。
-3. 执行 `2.pdf_batch_converter.py` 下载PDF并转换为TXT；可选择之后删除原始PDF。
-4. 启动 `3.text_analysis.py`（多进程）或 `text_analysis_universal.py` 生成Excel中的关键词总计和总词数。
-5. 查看 [Wiki](https://github.com/legeling/Annualreport_tools/wiki) 或 `docs/` 获取特定语言的详细教程。
+```powershell
+python .\01_get_report_links.py
+python .\02_download_reports_to_txt.py
+python .\03_text_analysis.py
+python .\04_merge_industry_city_data.py
+python .\05_wordcloud_analysis.py
+python .\06_lda_topic_analysis.py
+python .\07_finbert_analysis.py
+```
 
-### 运行建议（安全与稳定）
+## 关键词词典
 
-- 默认使用 `https` 请求与重试退避，请勿私自提高请求频率。
-- 下载器仅允许 `cninfo` 官方域名，避免误下载未知来源文件。
-- 目录建议用环境变量配置：
-  - `ANNUAL_REPORT_ROOT`：`3.text_analysis.py` 根目录
-  - `UNIVERSAL_ANALYSIS_DIR`：`text_analysis_universal.py` 输入目录
-  - `MDA_TXT_DIR` / `MDA_OUTPUT_DIR`：`batch_mda_extract.py` 输入输出目录
+关键词保存在：
 
-## 模块概览
+```text
+digital_keywords.py
+```
 
-| 脚本/资源 | 说明 |
-| --- | --- |
-| `1.report_link_crawler.py` | 带板块/行业过滤器和重试逻辑的巨潮资讯爬虫 |
-| `2.pdf_batch_converter.py` | 批量下载 + pdfplumber转换，带文件验证 |
-| `3.text_analysis.py` | 多进程关键词分析，Excel导出 |
-| `text_analysis_universal.py` | 适用于任意TXT文件夹的轻量级分析器 |
-| `./res/AnnualReport_links_2004_2023.xlsx` | 涵盖2004-2023年的精选主表 |
+当前词典按照企业数字化转型的结构化特征分为五类：
 
-## 脚本索引（旧版编号）
+- 人工智能技术
+- 大数据技术
+- 云计算技术
+- 区块链技术
+- 数字技术运用
 
-1. `1.report_link_crawler.py`（原 `1.年报链接抓取.py`）
-2. `2.pdf_batch_converter.py`（原 `2.PDF转码.py`）
-3. `3.text_analysis.py`（原 `3.文本分析.py`）
-4. `text_analysis_universal.py`（原 `文本分析-universal.py`）
+后续如果要调整关键词，只需要修改 `digital_keywords.py`，不做自动词典拓展。
 
-## 依赖要求
+## 分析模块
 
-```bash
+`03_text_analysis.py` 使用 `jieba` 分词、停用词过滤和 `Counter` 统计关键词出现次数，并计算标准化词频：
+
+```text
+关键词总次数 / 总词数 * 10000
+```
+
+`04_merge_industry_city_data.py` 合并上市公司行业、城市、省份信息。外部数据中的原有智能化转型词频、同年同行业智能化转型总词频、智能化转型程度三列不参与分析。
+
+`05_wordcloud_analysis.py` 输出：
+
+- 总体、前五年、后五年词云图
+- 行业维度前 5 大关键词柱状图
+- 城市排名图
+- 静态省份地图和城市热力地图
+
+`06_lda_topic_analysis.py` 使用 sklearn 的 LDA，固定 5 个主题，不做 K 值复杂评估、不做 pyLDAvis、不做词典拓展。输出每个主题的前 20 个主题词、每份年报的主主题和主题得分，并从年份、行业、城市维度进行可视化。
+
+`07_finbert_analysis.py` 使用中文 FinBERT 进行语义指数和情感概率分析，并从公司、年份、行业、省份、城市、阶段等维度进行对比。
+
+## 输出说明
+
+运行后会在本地生成：
+
+```text
+年报文件/
+```
+
+这个文件夹中包含 PDF、TXT、Excel、PNG、HTML 等数据和结果文件，体积较大，只保留在本地，不上传到 GitHub。
+
+## 依赖说明
+
+不用单独创建新的虚拟环境，可以在已有爬虫环境中安装或检查依赖：
+
+```powershell
 pip install -r requirements.txt
 ```
 
-## 多语言文档
+主要使用到的库包括：
 
-- [docs/README.en.md](./docs/README.en.md) — English（完整版本）
-- [docs/README.zh.md](./docs/README.zh.md) — 简体中文版本
+- pandas
+- requests
+- pdfplumber
+- selenium
+- jieba
+- matplotlib
+- wordcloud
+- pyecharts
+- scikit-learn
+- torch
+- transformers
 
-## Star历史
-
-[![Star History Chart](https://api.star-history.com/svg?repos=legeling/Annualreport_tools&type=Date)](https://star-history.com/#legeling/Annualreport_tools&Date)
-
-## 更新日志
-
-| 日期 | 亮点 |
-| --- | --- |
-| 2026/04/18 | 安全与稳定性加固：请求重试退避、下载域名校验、异常处理优化，文本分析性能优化 |
-| 2025/11/21 | 代码优化：添加类型提示，改进错误处理，增强所有脚本的鲁棒性 |
-| 2025/11/21 | README切换为英文默认 + 免责声明，多进程分析器，添加docs文件夹 |
-| 2025/03/15 | 添加requirements文件，下载器现在支持其他公告 |
-| 2024/10/13 | 修复爬虫结果中缺失公司的问题 |
-| 2024/02/14 | 上传主表，改进可读性 |
-| 2024/01/04 | 改进关键词准确性，添加通用分析器 |
-| 2023/05/25 | 全面重构，参数化工作流 |
-| 2023/04/20 | 初始提交 |
-
-## TODO
-
-- [ ] GUI / 桌面前端
-- [ ] 将数据持久化到PostgreSQL / DuckDB进行进一步分析
-- [ ] 云端关键词分析 & API端点
-- [ ] 自动化调度 + 告警（GitHub Actions / cron）
-- [x] 双语文档 & 项目指标
-
-## 贡献
-
-欢迎提交Issues和PRs！与社区分享功能想法、bug报告或最佳实践。
-
-## 支持
-
-如果这个项目对您的研究或工作有帮助，请考虑请我喝杯咖啡！您的支持让项目保持活力并激励进一步改进。
-
-<div align="center">
-  <a href="https://www.buymeacoffee.com/legeling">
-    <img src="https://img.shields.io/badge/Buy%20Me%20A%20Coffee-Support-orange?style=for-the-badge&logo=buy-me-a-coffee" alt="Buy Me A Coffee"/>
-  </a>
-</div>
-
-<div align="center">
-  <p><strong>或扫描微信二维码：</strong></p>
-  <img width="280" src="https://raw.githubusercontent.com/legeling/Annualreport_tools/main/imgs/wechat.jpg" alt="微信捐赠二维码"/>
-  <p><em>每一份贡献都值得感激！感谢您的支持！</em></p>
-</div>
